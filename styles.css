@@ -1,0 +1,35 @@
+/* Estilos para simular la experiencia de aplicación nativa */
+body {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-frame {
+    box-shadow: 0 25px 50px -12px rgba(91, 33, 182, 0.25);
+}
+
+/* Animación de apertura suave de modal */
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.25s ease-out forwards;
+}
+
+/* Scrollbar estilizada */
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
