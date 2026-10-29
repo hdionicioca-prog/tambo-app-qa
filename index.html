@@ -61,9 +61,7 @@
     <!-- CUERPO PRINCIPAL -->
     <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
 
-        <!-- ========================================================== -->
-        <!-- SECCIÓN 1: VISTA DE LA APLICACIÓN TAMBO                   -->
-        <!-- ========================================================== -->
+        <!-- SECCIÓN 1: VISTA DE LA APLICACIÓN TAMBO -->
         <section id="view-app" class="space-y-6">
 
             <!-- 1.1 FORMULARIO DE INICIO DE SESIÓN DIRECTO -->
@@ -94,7 +92,7 @@
 
                     <div class="bg-purple-50 p-3 rounded-xl border border-purple-200 text-[11px] text-purple-900">
                         <p class="font-bold mb-0.5">Acceso libre de evaluación:</p>
-                        <p class="text-[10px] text-purple-800">Puedes presionar directamente el botón para ingresar con las credenciales predeterminadas o escribir las que gustes.</p>
+                        <p class="text-[10px] text-purple-800">Presiona el botón para ingresar con las credenciales predeterminadas o ingresa los datos que gustes.</p>
                     </div>
                 </div>
             </div>
@@ -128,7 +126,7 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                    <!-- Catálogo en Vivo desde Firestore -->
+                    <!-- Catálogo con Imágenes Reales desde Firestore -->
                     <div class="lg:col-span-2 space-y-3">
                         <div class="flex justify-between items-center">
                             <h2 class="font-bold text-slate-800 text-base flex items-center gap-2">
@@ -192,9 +190,7 @@
 
         </section>
 
-        <!-- ========================================================== -->
-        <!-- SECCIÓN 2: EJECUCIÓN PYTEST VISUAL                        -->
-        <!-- ========================================================== -->
+        <!-- SECCIÓN 2: EJECUCIÓN PYTEST VISUAL -->
         <section id="view-pytest" class="hidden space-y-6">
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-4">
@@ -270,13 +266,50 @@
             console.warn("Base de datos local activa:", err);
         }
 
+        // CATÁLOGO DE PRODUCTOS CON IMÁGENES REALES
         const defaultTamboProducts = [
-            { id: "prod_1", name: "Empanada de Carne Tradicional", price: 6.50, stock: 15, img: "🥟" },
-            { id: "prod_2", name: "Inka Kola Sin Azúcar 500ml", price: 3.50, stock: 24, img: "🥤" },
-            { id: "prod_3", name: "Combo Sándwich Pollo + Bebida", price: 11.90, stock: 5, img: "🥪" },
-            { id: "prod_4", name: "Galletas Rellenas Vainilla", price: 2.20, stock: 12, img: "🍪" },
-            { id: "prod_5", name: "Papas Nativas Crujientes 120g", price: 4.80, stock: 8, img: "🥔" },
-            { id: "prod_6", name: "Cerveza Cusqueña 330ml", price: 6.00, stock: 3, img: "🍺" }
+            { 
+                id: "prod_1", 
+                name: "Empanada de Carne Tradicional", 
+                price: 6.50, 
+                stock: 15, 
+                img: "https://images.unsplash.com/photo-1628191010210-a59de33e5941?w=400&q=80" 
+            },
+            { 
+                id: "prod_2", 
+                name: "Inka Kola Sin Azúcar 500ml", 
+                price: 3.50, 
+                stock: 24, 
+                img: "https://plazavea.vteximg.com.br/arquivos/ids/26359546-1000-1000/20261313.jpg" 
+            },
+            { 
+                id: "prod_3", 
+                name: "Combo Sándwich Pollo + Bebida", 
+                price: 11.90, 
+                stock: 5, 
+                img: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&q=80" 
+            },
+            { 
+                id: "prod_4", 
+                name: "Galletas Rellenas Vainilla", 
+                price: 2.20, 
+                stock: 12, 
+                img: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&q=80" 
+            },
+            { 
+                id: "prod_5", 
+                name: "Papas Nativas Crujientes 120g", 
+                price: 4.80, 
+                stock: 8, 
+                img: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&q=80" 
+            },
+            { 
+                id: "prod_6", 
+                name: "Cerveza Cusqueña 330ml", 
+                price: 6.00, 
+                stock: 3, 
+                img: "https://plazavea.vteximg.com.br/arquivos/ids/26359850-1000-1000/20261343.jpg" 
+            }
         ];
 
         let currentCatalog = [...defaultTamboProducts];
@@ -386,6 +419,7 @@
             }
         }
 
+        // RENDERIZADO CON SOPORTE PARA IMÁGENES REALES Y EMOJIS
         function renderCatalog(items) {
             const grid = document.getElementById('store-catalog-grid');
             if (!grid) return;
@@ -395,15 +429,21 @@
                 const inStock = p.stock > 0;
                 const card = document.createElement('div');
                 card.className = "bg-white p-3 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between";
+
+                const isUrlImage = p.img && (p.img.startsWith('http') || p.img.startsWith('data:image'));
+                const imageElement = isUrlImage
+                    ? `<img src="${p.img}" alt="${p.name}" class="h-full w-full object-contain p-1 rounded-xl">`
+                    : `<span class="text-3xl">${p.img || '🛍️'}</span>`;
+
                 card.innerHTML = `
                     <div>
-                        <div class="h-20 bg-purple-50 rounded-xl flex items-center justify-center text-3xl mb-2 relative">
-                            ${p.img}
-                            <span class="absolute top-1.5 right-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded ${inStock ? 'bg-purple-200 text-purple-900' : 'bg-rose-200 text-rose-800'}">
+                        <div class="h-28 bg-purple-50/60 rounded-xl flex items-center justify-center mb-2.5 relative overflow-hidden border border-purple-100/50">
+                            ${imageElement}
+                            <span class="absolute top-1.5 right-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded shadow-xs ${inStock ? 'bg-purple-200 text-purple-900' : 'bg-rose-200 text-rose-800'}">
                                 ${inStock ? `Stock: ${p.stock}` : 'Agotado'}
                             </span>
                         </div>
-                        <h4 class="font-bold text-slate-800 text-xs">${p.name}</h4>
+                        <h4 class="font-bold text-slate-800 text-xs line-clamp-1">${p.name}</h4>
                         <p class="text-[#3A0751] font-black text-xs mt-1">S/ ${p.price.toFixed(2)}</p>
                     </div>
                     <button onclick="addProductToCart('${p.id}')" 
